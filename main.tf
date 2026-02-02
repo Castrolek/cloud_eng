@@ -84,3 +84,41 @@ resource "aws_subnet" "Podsiec_prywatna" {
   }
   
 }
+resource "aws_security_group" "allow_web" {
+  name        = "allow_web_traffic"
+  description = "Pozwol na bezpieczny ruch WWW"
+  vpc_id      = aws_vpc.glowna_siec.id
+
+  ingress {
+    description = "HTTPS od swiata"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Web-Firewall"
+  }
+}
+
+resource "aws_instance" "serwer_bezpieczny" {
+  ami           = "ami-ff0fea31"
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.Podsiec_prywatna.id
+
+
+  vpc_security_group_ids = [aws_security_group.allow_web.id]
+
+  tags = {
+    Name = "Serwer-Bastion-Poznan"
+  }
+}
