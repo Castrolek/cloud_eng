@@ -52,6 +52,9 @@ resource "aws_s3_object" "style" {
 resource "aws_s3_bucket_policy" "public_read" {
   bucket = aws_s3_bucket.moja_strona.id
 
+  # TA LINIA JEST KLUCZOWA:
+  depends_on = [aws_s3_bucket_public_access_block.dostep]
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
