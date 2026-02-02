@@ -1,0 +1,10 @@
+# Ignoruj folder z wtyczkami (to te 700MB!)
+.terraform/
+
+# Ignoruj pliki wykonywalne (to Twój terraform.exe)
+*.exe
+terraform.exe
+
+# Ignoruj pliki stanu
+*.tfstate
+*.tfstate.*
