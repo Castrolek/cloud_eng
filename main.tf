@@ -11,6 +11,7 @@ provider "aws" {
     s3 = "http://localhost:4566"
     iam = "http://localhost:4566"
     sts = "http://localhost:4566"
+    ec2 = "http://localhost:4566"
   }
 }
 
@@ -63,5 +64,23 @@ resource "aws_iam_policy" "read_only_buckets" {
 resource "aws_iam_user_policy_attachment" "dev_attach" {
   user = aws_iam_user.junior_dev.name
   policy_arn = aws_iam_policy.read_only_buckets.arn
+  
+}
+
+resource "aws_vpc" "glowna_siec" {
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+
+  tags={
+    Name = "VPC-Poznan-Lab"
+  }
+}
+resource "aws_subnet" "Podsiec_prywatna" {
+  vpc_id = aws_vpc.glowna_siec.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Private_subnet"
+  }
   
 }
