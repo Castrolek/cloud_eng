@@ -1,3 +1,12 @@
+
+terraform {
+  backend "s3" {
+    bucket = "kp-terraform-state-2026" # Nazwa nowego bucketa z kroku 1
+    key    = "web-portfolio/terraform.tfstate"
+    region = "eu-central-1"
+  }
+}
+
 provider "aws" {
   region = "eu-central-1" 
 }
