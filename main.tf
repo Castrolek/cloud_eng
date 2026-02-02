@@ -52,7 +52,7 @@ resource "aws_s3_object" "style" {
 resource "aws_s3_bucket_policy" "public_read" {
   bucket = aws_s3_bucket.moja_strona.id
 
-  # TA LINIA JEST KLUCZOWA:
+  # TO JEST KLUCZ: Czeka aż blokady zostaną zdjęte
   depends_on = [aws_s3_bucket_public_access_block.dostep]
 
   policy = jsonencode({
