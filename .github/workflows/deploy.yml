@@ -22,15 +22,15 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init & Apply
-        id: terraform_run
         run: |
           terraform init
           terraform apply -auto-approve
-          # Wyciągamy ID dystrybucji z outputów terraforma i zapisujemy dla GitHuba
-          echo "DIST_ID=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_ENV
+          # Używamy terraform output -raw, aby uniknąć błędów formatowania
+          ID=$(terraform output -raw cloudfront_distribution_id)
+          echo "DIST_ID=$ID" >> $GITHUB_ENV
 
       - name: CloudFront Invalidation
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ steps.get_dist_id.outputs.DIST_ID }} \
+            --distribution-id ${{ env.DIST_ID }} \
             --paths "/*"
