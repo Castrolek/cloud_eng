@@ -5,7 +5,7 @@ on:
     branches: [ main ] # Pipeline ruszy tylko gdy zrobisz push do main
 
 jobs:
-  deploy:
+  moje-wdrozenie: # Zmień tę nazwę z 'deploy' na cokolwiek innego
     runs-on: ubuntu-latest
     steps:
       - name: Checkout kodu
