@@ -21,16 +21,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Init & Apply
+      - name: Terraform Apply & CloudFront Invalidation
         run: |
           terraform init
           terraform apply -auto-approve
-          DIST_ID=$(terraform output -raw cloudfront_distribution_id | grep -oE "[A-Z0-9]+" | head -n 1)
-          echo "DIST_ID=$DIST_ID" >> $GITHUB_ENV
-
-      - name: CloudFront Invalidation
-        if: success()
-        run: |
+          
+          DIST_ID=$(terraform output -raw cloudfront_distribution_id)
+          
+          echo "Inwalidacja dla dystrybucji: $DIST_ID"
+          
           aws cloudfront create-invalidation \
-            --distribution-id ${{ env.DIST_ID }} \
+            --distribution-id $DIST_ID \
             --paths "/*"
