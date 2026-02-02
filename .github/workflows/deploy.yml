@@ -25,7 +25,8 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve
-          DIST_ID=$(terraform output -raw cloudfront_distribution_id)
+          
+          DIST_ID=$(terraform output -raw cloudfront_distribution_id | tr -d '\r')
           echo "DIST_ID=$DIST_ID" >> $GITHUB_ENV
 
       - name: CloudFront Invalidation
