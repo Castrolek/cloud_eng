@@ -25,9 +25,8 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve
-          # Używamy terraform output -raw, aby uniknąć błędów formatowania
-          ID=$(terraform output -raw cloudfront_distribution_id)
-          echo "DIST_ID=$ID" >> $GITHUB_ENV
+          DIST_ID=$(terraform output -raw cloudfront_distribution_id)
+          echo "DIST_ID=$DIST_ID" >> $GITHUB_ENV
 
       - name: CloudFront Invalidation
         run: |
