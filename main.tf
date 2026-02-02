@@ -1,7 +1,13 @@
 provider "aws" {
   region = "eu-central-1" 
 }
-
+terraform {
+  backend "s3" {
+    bucket = "twoj-bucket-na-stan-terraform"
+    key    = "state/terraform.tfstate"
+    region = "eu-central-1"
+  }
+}
 # 1. Tworzymy koszyk S3
 resource "aws_s3_bucket" "moja_strona" {
   bucket = "moje-unikalne-portfolio-2026-xyz" # Musi być unikalna nazwa na świecie!
