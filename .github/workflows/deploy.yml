@@ -20,16 +20,19 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+        with:
+              terraform_wrapper: false
 
       - name: Terraform Apply & CloudFront Invalidation
         run: |
           terraform init
           terraform apply -auto-approve
           
+          # Teraz -raw zwróci TYLKO ID, bez żadnych śmieci
           DIST_ID=$(terraform output -raw cloudfront_distribution_id)
           
-          echo "Inwalidacja dla dystrybucji: $DIST_ID"
+          echo "Uruchamiam inwalidację dla: $DIST_ID"
           
           aws cloudfront create-invalidation \
-            --distribution-id $DIST_ID \
+            --distribution-id "$DIST_ID" \
             --paths "/*"
